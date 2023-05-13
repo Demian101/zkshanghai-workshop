@@ -2,4 +2,15 @@
 
 ## 第1题 Circom
 
-xxxxxx
+### Semaphore Setup:
+
+```bash
+
+npx @semaphore-protocol/cli@latest create my-app --template monorepo-ethers
+
+npm i -g @semaphore-protocol/cli@latest
+semaphore create my-app --template monorepo-ethers
+
+cd my-app
+yarn
+```
