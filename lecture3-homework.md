@@ -25,7 +25,9 @@ PROTOCOL:
 
 
 $$
+\begin{aligned}
 y \leftarrow \begin{cases}s^2 x & \text { if } b=0 \\ s^2 & \text { if } b=1\end{cases}
+\end{aligned}
 $$
 
 
