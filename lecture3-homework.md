@@ -12,22 +12,39 @@ Given integers $x, m$, write $QR(m, x)=1$ if $x$ is a quadratic residue $\bmod m
 
 #### 二次非剩余 Quadratic nonresidue
 
+
+ASSUMPTION: The Prover can compute $QR(m, x)$ for all $m, x$
+
+COMMON INPUT: positive integers $m, x$
+
+GOAL: the Prover wants to convince the Verifer that $QR(m, x) = 0$
+
+PROTOCOL:
+
+1. The Verifier picks a random $s \in Z_m$ uniformly among elements relatively prime to $m$, and also tosses a coin $b \leftarrow_R\{0,1\}$. Set
+
+
+$$
+y \leftarrow \begin{cases}s^2 x & \text { if } b=0 \\ s^2 & \text { if } b=1\end{cases}
+$$
+
+
 - (a) **完备性**：如果 $QR(m, x)=0$ 并且双方都按照协议行事，那么验证者总是接受。
 
 - (b) **可靠性**：如果 $QR(m, x)=1$，那么无论 Prover 做什么（Prover 不必遵循协议），Verifer 都会以 $\geq 1 / 2$ 的概率拒绝
 
 (a) 完备性：
-
 是的。b=0时，QR(m, y)等于0；b=1时，QR(m, y)等于1
-
 验证者收到的值永远等于b
 
 (b) 可靠性:
-
 不可靠。
-
 Prover可以看出来 y是否是x的倍数。如果是x倍数的时候返回0，否则返回1，那么Prover有大于1/2的概率猜对答案。
 
+-----
+
+a. 如果QR(m,x)=0, 则QR(m,s^2*x)=0。显然如果是s^2=x, QR(m,x)=1。 所以如果双方都遵守协议，证明者每次都能正确返回b的值。
+b. 如果QR(m,x)=1，无论证明者选择b是0还是1，QR(m,y)=1。因此证明者无法从计算QR(m,y)得到任何b的信息，只能随机返回0/1,那么就会有1/2的概率失败。
 
 
 #### 二次剩余 Quadratic residue
