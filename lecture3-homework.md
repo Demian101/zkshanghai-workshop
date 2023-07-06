@@ -1,63 +1,163 @@
-# 第3课 课后作业
-# 第 3 课 练习
+## 第3课 课后作业
+
+## 第 3 课 练习
 
 给定整数 $x, m$，如果 $x$ 在模 $m$ 下是二次剩余，即存在整数 $s$，使得 $s^{2} \equiv x(\bmod m)$，则记作 $QR(m, x)=1$ ; 如果 $x$ 在模 $m$ 下不是二次剩余，则记作 $QR(m, x)=0$。
 
 <details>
 <summary>英文原文</summary>
 
+
 Given integers $x, m$, write $QR(m, x)=1$ if $x$ is a quadratic residue $\bmod m$, i.e., there exists an integer $s$ such that $s^{2} \equiv x(\bmod m)$; write $QR(m, x)=0$ if $x$ is not a quadratic residue $\bmod m$.
 
 </details>
 
-#### 二次非剩余 Quadratic nonresidue
+
+
+### 二次非剩余 Quadratic nonresidue
 
 
 ASSUMPTION: The Prover can compute $QR(m, x)$ for all $m, x$
 
 COMMON INPUT: positive integers $m, x$
 
-GOAL: the Prover wants to convince the Verifer that $QR(m, x) = 0$
+GOAL: the Prover **wants to convince the Verifer that $QR(m, x) = 0$**
 
-PROTOCOL:
+PROTOCOL: 
 
-1. The Verifier picks a random $s \in Z_m$ uniformly among elements relatively prime to $m$, and also tosses a coin $b \leftarrow_R\{0,1\}$. Set
+1. The Verifier picks a random $s \in Z_m$ uniformly among elements relatively prime to $m$, and also tosses a coin $b \leftarrow_R\{0,1\}$.  Set
 
 
 $$
 \begin{aligned}
-y \leftarrow \begin{cases}s^2 x & \text { if } b=0 \\ s^2 & \text { if } b=1\end{cases}
+y \leftarrow \begin{cases}s^2 x & \text { if } b=0 \\ s^2 & \text { if } b=1 \end{cases}
 \end{aligned}
 $$
+
+​		The Verifier sends  $y$  to the Prover and challenges the Prover to determine  $b$.
+
+2. The Prover computes  $QR(m, y)$  and sends its value back to the Verifier
+3. The Verifier accepts if the value it received from the Prover is indeed equal to $b$;  otherwise it rejects.
+
+
+
+Question: You are asked to check:
 
 
 - (a) **完备性**：如果 $QR(m, x)=0$ 并且双方都按照协议行事，那么验证者总是接受。
 
 - (b) **可靠性**：如果 $QR(m, x)=1$，那么无论 Prover 做什么（Prover 不必遵循协议），Verifer 都会以 $\geq 1 / 2$ 的概率拒绝
 
-(a) 完备性：
-是的。b=0时，QR(m, y)等于0；b=1时，QR(m, y)等于1
-验证者收到的值永远等于b
 
-(b) 可靠性:
-不可靠。
-Prover可以看出来 y是否是x的倍数。如果是x倍数的时候返回0，否则返回1，那么Prover有大于1/2的概率猜对答案。
+
+----
+
+关于 Completeness 与 Soundness
+
+-   **Completeness:** If the prover indeed knows how to change the state from _A_ to _B_ in a valid way then the prover will manage to convince the verifier to accept the change. (真的假不了)
+-   **Soundness:** If the prover doesn’t know how to change the state from _A_ to _B_, then the verifier will notice an inconsistency (前后矛盾) in the interaction and reject the suggested state transition. There remains a tiny false-positive probability(假阳性概率) ,   i.e., a probability of the verifier accepting an invalid proof. This probability is a system security parameter which can be set to an acceptable level like  $1/(2^{128})$
+
+
 
 -----
 
-a. 如果QR(m,x)=0, 则QR(m,s^2*x)=0。显然如果是s^2=x, QR(m,x)=1。 所以如果双方都遵守协议，证明者每次都能正确返回b的值。
-b. 如果QR(m,x)=1，无论证明者选择b是0还是1，QR(m,y)=1。因此证明者无法从计算QR(m,y)得到任何b的信息，只能随机返回0/1,那么就会有1/2的概率失败。
 
 
-#### 二次剩余 Quadratic residue
+#### Solution
+
+> 待验证： (a) **完备性**：如果 $QR(m, x)=0$ 并且双方都按照协议行事，那么验证者总是接受。
+
+满足完备性:  由于 $QR(m, x) = 0$，且已知 $x$ 是模 $m$ 下的二次非剩余。接下来，我们需要根据 Verifier 掷出的随机比特 $b$ 考虑两种情况：
+
+- 如果 $b = 0$，那么 $y = s^2x$，并且由于 $x$ 是二次非剩余，$y$ 也是二次非剩余。所以 $QR(m, y) = 0$，这与 Verifier 所预期的 $b = 0$ 相符。
+- 如果 $b = 1$，那么 $y = s^2$，$y$ 是二次剩余。所以 $QR(m, y) = 1$，这与 Verifier 所预期的 $b = 1$ 相符。
+
+因此，无论 $b$ 的值如何，Verifier 都会接受。
+
+即： **真的假不了**
+
+
+
+> 待验证： (b) **可靠性**：如果 $QR(m, x)=1$，那么无论 Prover 做什么（Prover 不必遵循协议），Verifer 都会以 $\geq 1 / 2$ 的概率拒绝
+
+满足可靠性：如果 Prover 试图错误地证明 $x$ 是模 $m$ 下的二次非剩余（即 $QR(m, x) = 0$），而实际上 $x$ 是模 $m$ 下的二次剩余（即 $QR(m, x) = 1$），那么无论 Prover 做什么，Verifier 都应该有至少一半的概率拒绝 Prover。
+
+在本例中，当 $QR(m, x) = 1$ 时，即 $x$ 是模 $m$ 下的二次剩余，两种情况：
+
+- 当 $b = 0$  时，由于计算出的 $y = s^2x$ 也是二次剩余，而 Verifier 期望的 $b$ 值是 0，所以 Verifier 会拒绝。
+- 当 $b = 1$  时，由于 $y = s^2$ 是二次剩余，符合 Verifier 期望的 $b = 1$，所以 Verifier 会接受。
+
+
+
+### 二次剩余 Quadratic residue
+
+COMMON INPUT: positive integers  $m, x$  with $gcd(m, x) =1$
+
+PRIVATE INPUT: the Prover knows a secret integer $s$ such that $s^2 ≡ x$ mod m
+
+GOAL: the Prover wants to convince the Verifier that $QR(m, x) = 1$ without revealing any information about  $s$
+
+(Note that the Prover can easily convince the Verifier that  $QR(m, x) = 1$  by sending s to the Verifier, but this would reveal $s$  completely.)
+
+
+
+PROTOCOL：
+
+1. The Prover picks a random  $t \in \mathbb{Z}_m$  uniform among residues relatively prime to $m$  （与 $m$  互质） .  The Prover sends $y ← xt^2 \mod{m}$   to the Verifier.
+2. The Verifier flips a coin  $b ←_{R} \{0,1\}$ and sends $b$ to the Prover.
+3. The Prover receives  $b$  and sends to the Verifier the value of
+
+$$
+\begin{aligned}
+u \leftarrow \begin{cases} t& \text { if } b=0 \\ st & \text { if } b=1 \end{cases}
+\end{aligned}
+$$
+
+4. The Verifier accepts if 
+
+$$
+\begin{aligned}
+y \equiv 
+  \begin{cases} u^2x \mod{m} & \text { if } b=0 \\ 
+    u^2 \mod{m} & \text { if } b=1 
+  \end{cases}
+\end{aligned}
+$$
+
+​        and rejects otherwise.
+
+
+
+You are asked to check:
+
 
 - (a) **完备性**：如果双方都按照协议行事，那么 Verifier 总是接受。
 
 - (b) **可靠性**：如果 $QR(m, x)=0$（特别是，Prover 不知道任何有效的 $s$ ），那么无论 Prover 做什么，Verifier 都以 $\geq 1 / 2$ 的几率拒绝。
 
-- (b\*) **知识可靠性**：对于任何使得Verifier接受的证明算法，如果允许Verifier同时查询$b\in\{0,1\}$的两个值（对于 相同的 $t$ )，则 Verifier 可以从 Prover 中提取秘密 $s$。 （这里的重点是除非证明者“知道”$s$，否则证明者无法说服验证者。）
+- (b\*) **知识可靠性**：对于任何使得 Verifier 接受的证明算法，如果允许 Verifier 同时查询  $b\in\{0,1\}$  的两个值（对于相同的 $t$  )，则 Verifier 可以从 Prover 中提取秘密 $s$。 （这里的重点是除非证明者“知道”$s$，否则证明者无法说服验证者。）
 
 - (c) **零知识**：无论验证者做什么（验证者的行为可能与协议不同），验证者都可以在不与证明者交互的情况下自行模拟整个交互，这样如果验证者接受，那么记录下来的信息与实际交互几乎不可区分。
+
+
+
+------
+
+
+
+#### Solution
+
+- 完备性：如果双方都按照协议行事，那么 Verifier 总是接受。
+  - 为当 Prover 遵循协议时，他根据 $b$ 的值选择 $u = t$ 或 $u = st$，并确保 $y \equiv u^2x \mod{m}$（如果 $b = 0$）或 $y \equiv u^2 \mod{m}$（如果 $b = 1$）。所以 Verifier 总是会接受。
+- 可靠性：如果 $QR(m, x) = 0$（特别是，Prover 不知道任何有效的 $s$），那么无论 Prover 做什么，Verifier 都以 $\geq 1 / 2$ 的几率拒绝。
+  - 如果 $QR(m, x) = 0$，那么 $x$ 是模 $m$ 下的二次非剩余。因此，无论 Prover 提供何种 $t$，都无法同时满足 $y \equiv t^2x \mod{m}$ 和 $y \equiv (st)^2 \mod{m}$，因为至少有一个不是二次剩余。由于 $b$ 是随机选择的，所以 Verifier 有至少 1/2 的概率选择一个使得 Prover 无法满足等式的 $b$，从而拒绝 Prover。
+- 知识可靠性：对于任何使得 Verifier 接受的证明算法，如果允许 Verifier 同时查询 $b\in{0,1}$ 的两个值（对于相同的 $t$），则 Verifier 可以从 Prover 中提取秘密 $s$。
+  - 如果 Verifier 可以同时查询 $b = 0$ 和 $b = 1$，那么它将接收到两个值 $u_0$ 和 $u_1$，对应于 $t$ 和 $st$。从这两个值中，Verifier 可以计算出 $s = u_1 / u_0$，从而获得秘密值 $s$。这表明只有知道 $s$ 的 Prover 才能成功地使 Verifier 接受。
+- 零知识：无论验证者做什么（验证者的行为可能与协议不同），验证者都可以在不与证明者交互的情况下自行模拟整个交互，这样如果验证者接受，那么记录下来的信息与实际交互几乎不可区分。
+  - Verifier 可以随机选择一个 $b$ 和一个 $u$，并计算 $y = u^2$（如果 $b = 0$）或 $y = u^2x \mod{m}$（如果 $b = 1$）。这将生成与实际交互相同的 transcript，并且不需要知道 $s$。因此，该协议具有零知识性质。
+
+
+
 
 
 #### 双线性自映射意味着DDH的失效 Self-pairing implies failure of DDH
