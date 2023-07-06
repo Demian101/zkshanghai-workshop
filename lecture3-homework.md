@@ -10,13 +10,13 @@ Given integers $x, m$, write $QR(m, x)=1$ if $x$ is a quadratic residue $\bmod m
 
 </details>
 
-## 二次非剩余 Quadratic nonresidue
+#### 二次非剩余 Quadratic nonresidue
 
 - (a) **完备性**：如果 $QR(m, x)=0$ 并且双方都按照协议行事，那么验证者总是接受。
 
 - (b) **可靠性**：如果 $QR(m, x)=1$，那么无论 Prover 做什么（Prover 不必遵循协议），Verifer 都会以 $\geq 1 / 2$ 的概率拒绝
 
-## 二次剩余 Quadratic residue
+#### 二次剩余 Quadratic residue
 
 - (a) **完备性**：如果双方都按照协议行事，那么 Verifier 总是接受。
 
@@ -27,7 +27,7 @@ Given integers $x, m$, write $QR(m, x)=1$ if $x$ is a quadratic residue $\bmod m
 - (c) **零知识**：无论验证者做什么（验证者的行为可能与协议不同），验证者都可以在不与证明者交互的情况下自行模拟整个交互，这样如果验证者接受，那么记录下来的信息与实际交互几乎不可区分。
 
 
-## 双线性自映射意味着DDH的失效 Self-pairing implies failure of DDH
+#### 双线性自映射意味着DDH的失效 Self-pairing implies failure of DDH
 
 设 $\mathbb{G}$ 和 $\mathbb{G}_{T}$ 是相同素数阶 $q$ 的阿贝尔群（以加法写出）。 设 $g \in \mathbb{G}$ 为生成元。 假设我们有一个可有效计算的非退化双线性对
 
@@ -58,7 +58,7 @@ This exercise shows that the Decisional Diffie-Hellman (DDH) assumption is false
 
 </details>
 
-## BLS 签名聚合 BLS signature aggregation
+#### BLS 签名聚合 BLS signature aggregation
 
 ::: tip 设置
 
