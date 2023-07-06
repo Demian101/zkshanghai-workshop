@@ -162,6 +162,7 @@ You are asked to check:
 
 #### 双线性自映射意味着DDH的失效 Self-pairing implies failure of DDH
 
+
 设 $\mathbb{G}$ 和 $\mathbb{G}_{T}$ 是相同素数阶 $q$ 的阿贝尔群（以加法写出）。 设 $g \in \mathbb{G}$ 为生成元。 假设我们有一个可有效计算的非退化双线性对
 
 $$
@@ -190,6 +191,10 @@ Hint: compute the pairing against $g$.
 This exercise shows that the Decisional Diffie-Hellman (DDH) assumption is false for groups with self-pairing.
 
 </details>
+
+
+答：如果在等式 $\alpha \beta g = y$ 两端同时计算与 $g$ 的映射，得到 $e(\alpha \beta g, g) = e(\alpha g, \beta g) = e(y, g)$ 。由此可以说明等式 $\alpha \beta g = y$ 成立。
+
 
 #### BLS 签名聚合 BLS signature aggregation
 
@@ -262,3 +267,11 @@ Note. The above signature aggregation scheme is not secure due to a _rogue publi
 For more on BLS signature aggregation, see <https://crypto.stanford.edu/~dabo/pubs/papers/BLSmultisig.html>
 
 </details>
+
+#### Solution
+
+验证算法可以接受正确的签名。因为在验证 $(pk,m,\sigma)$ 时，等式两端分别为 $e(g_0,\sigma) = e(g_0, \alpha H(m))$ 和 $e(pk,H(m)) = e(\alpha g_0, H(m))= e(g_0,\alpha H(m))$ 。等式两端相等，就说明正确的签名会始终通过验证算法。
+
+选择消息攻击下的存在性不可伪造性：
+* 在多项式时间计算出 $\alpha$ 是困难的，因此攻击者很难伪造签名 $\sigma \leftarrow \alpha H(m)$ 。因为这是一个离散对数困难问题;
+* 哈希函数具有抗碰撞性，因此无法在多项式时间内找到一个 $m$ ，使得 $H(m)$ 等于一个事先给定的值。所以攻击者想要任意选择消息 $m$ 使得 $H(m)$ 等于一个特定的值，这在多项式时间内也无法做到。
