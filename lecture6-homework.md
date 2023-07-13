@@ -43,6 +43,7 @@ $$
 
 
 转化程序：
+
 $$
 \begin{aligned}
 &f_1(X_1, X_2, X_3, {X_1}^{next}, {X_2}^{next}, {X_3}^{next})=A^{next}-(B+C) \\
@@ -50,6 +51,7 @@ $$
 &f_3(X_1, X_2, X_3, {X_1}^{next}, {X_2}^{next}, {X_3}^{next})=C^{next}-(A^{next}+B^{next}) 
 \end{aligned}
 $$
+
 第 $i=2$ 行举例：
 
 
@@ -107,6 +109,7 @@ $$
 $$
 z_i=\prod_{1 \leq j \leq i}\left(a_j+\gamma\right) /\left(b_j+\gamma\right)
 $$
+
 检查约束：
 
 
