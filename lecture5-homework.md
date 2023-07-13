@@ -46,6 +46,7 @@ $t$  个多项式，打开一个随机点, 进行批量验证
 初始化 : 双线性群为  $\mathcal{G} = (e, \ \ \mathbb{G}_1, \ \ \mathbb{G}_2 , \ \ \mathbb{G}_T)$ , 随机数  $s \in_{R} {\mathbb{Z}_{p}}^{*}$  , $d+2$  元组   
 
 $$\langle {\color{orange}G_1, \ \  s \cdot G_1 , \ \  s^2 \cdot G , \ \  , \dots, s^{d-1} \cdot G_1}  \ \ ; {\color{blue} \ \ G_2, \ \ sG_2}\rangle \ \  \in \ \ ({\mathbb{G}_{1}}^{d}, \ \ {\mathbb{G}_{2}}^{d})$$
+
 让输出为 : 
 
 $$
